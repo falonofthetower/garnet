@@ -12,3 +12,6 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 gem 'bootstrap_form'
+gem 'bootstrap-sass'
+gem 'pg'
+gem 'haml-rails'
