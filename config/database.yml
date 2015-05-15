@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: falon
+  password: myflix
+  timeout: 5000
+
+development:
+  <<: *default
+  database: garnet_development
+
+test:
+  <<: *default
+  database: garnet_test

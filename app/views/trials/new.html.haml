@@ -1,0 +1,11 @@
+.row
+  = bootstrap_form_for(@user, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-6" do |f|
+    %header
+      %h1 Add trial
+    %fieldset
+      = f.text_field :name, label: "Name of Trial"
+      = f.text_field :link, label: "Url to Service"
+      = f.text_area :instructions, label: "Instructions on how to cancel"
+    %fieldset.action.control-group
+      .controls
+        %input(type="submit" value="Add Trial" class="btn btn-default")
