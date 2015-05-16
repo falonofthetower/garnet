@@ -11,6 +11,7 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 *.swp
+Guardfile
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

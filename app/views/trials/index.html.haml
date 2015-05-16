@@ -1,0 +1,19 @@
+.container
+  .row
+    %header
+      %h3 Trials
+    %ul
+      - @trials.each do |trial|
+        %li.row
+          .col-sm-2
+            %h3 trial.name
+        %li.row
+          .col-sm-2
+            %p trial.url
+        %li.row
+          .col-sm-2
+            %p trial.cancel_url
+        %li.row
+          .col-sm-2
+            %p trial.instructions
+            %hr

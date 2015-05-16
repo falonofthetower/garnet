@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'rails', '4.1.1'
 gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.3'
@@ -15,3 +14,18 @@ gem 'bootstrap_form'
 gem 'bootstrap-sass'
 gem 'pg'
 gem 'haml-rails'
+
+group :test, :development do
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'rspec-rails', '2.99'
+  gem 'guard-rspec'
+  gem 'capybara'
+end
+
+group :test do
+  gem 'database_cleaner', '1.2.0'
+  gem 'shoulda-matchers'
+  gem 'fabrication'
+  gem 'faker'
+end
