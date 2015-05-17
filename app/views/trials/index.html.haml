@@ -1,0 +1,16 @@
+.container
+  .row
+    %header
+      %h3 Trials
+    %ul
+      - @trials.each do |trial|
+        %li.row
+          .col-sm-2
+            %h3= link_to trial.name, trial.url
+        %li.row
+          .col-sm-2
+            %p= link_to "Cancel", trial.cancel_url
+        %li.row
+          .col-sm-2
+            %p= trial.expiration_date
+            %hr
