@@ -14,6 +14,7 @@ gem 'bootstrap_form'
 gem 'bootstrap-sass'
 gem 'pg'
 gem 'haml-rails'
+gem 'bcrypt'
 
 group :test, :development do
   gem 'pry'
