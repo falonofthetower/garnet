@@ -12,7 +12,7 @@ class TrialsController < ApplicationController
     if @trial.save
       redirect_to trials_path
     else
-      flash[:danger] = "Something went wrong"
+      flash.now[:danger] = "Something went wrong"
       render :new
     end
   end
