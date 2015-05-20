@@ -9,14 +9,14 @@ class SessionsController < ApplicationController
       redirect_to home_path
       flash[:success] = "You may now begin"
     else
-      redirect_to sign_in_path
+      redirect_to login_path
       flash[:danger] = "Your login isn't right--fix it!"
     end
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to sign_in_path
+    redirect_to login_path
     flash[:danger] = "You have been signed out!"
   end
 end

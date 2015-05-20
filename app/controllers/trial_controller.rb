@@ -1,2 +1,0 @@
-class TrialController < ApplicationController
-end

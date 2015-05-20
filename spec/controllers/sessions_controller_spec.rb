@@ -27,7 +27,7 @@ describe SessionsController do
       end
 
       it "redirects to the sign in path" do
-        expect(response).to redirect_to sign_in_path
+        expect(response).to redirect_to login_path
       end
 
       it "does not put the signed in user in the session" do
@@ -47,8 +47,8 @@ describe SessionsController do
       get :destroy
     end
 
-    it "redirect_to sign_in_path" do
-      expect(response).to redirect_to sign_in_path
+    it "redirect_to login_path" do
+      expect(response).to redirect_to login_path
     end
 
     it "clears the user from the session" do
