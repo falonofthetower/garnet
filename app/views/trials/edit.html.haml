@@ -1,0 +1,8 @@
+= bootstrap_form_for(@trial, layout: :horizontal, label_col: "col-sm-2", control_col: "col-sm-6") do |f|
+  %header
+    %h1 Add trial
+  %fieldset
+    = render 'form', f: f
+  %fieldset.action.control-group
+    .controls
+      %input(type="submit" value="Edit Trial" class="btn btn-default")

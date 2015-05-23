@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper_method :current_user
+  helper_method :current_user, :logged_in?
 
   def current_user
     @current_user ||=  User.find(session[:user_id]) if session[:user_id]
@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
   end
 
   def access_denied
-    flash[:danger] = "You need to be logged in for that!"
-    redirect_to register_path
+    redirect_to login_path
   end
 end
