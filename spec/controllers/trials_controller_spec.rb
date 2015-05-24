@@ -4,9 +4,7 @@ describe TrialsController do
   describe "GET index" do
     context "For authenticated user" do
       let(:user) { Fabricate(:user) }
-      before do
-        session[:user_id] = user.id
-      end
+      before { set_current_user(user) }
 
       it "sets @trials" do
         trial = Fabricate(:trial, user_id: user.id)
@@ -23,19 +21,14 @@ describe TrialsController do
       end
     end
 
-    context "for unauthenticated user" do
-      it "redirects to root_path" do
-        get :index
-        expect(response).to redirect_to(login_path)
-      end
+    it_behaves_like "requires login" do
+      let(:action) { get :index }
     end
   end
 
   describe "POST create" do
     let(:user) { Fabricate(:user) }
-    before do
-      session[:user_id] = user.id
-    end
+    before { set_current_user(user) }
 
     context "with valid inputs" do
       before do
@@ -78,10 +71,7 @@ describe TrialsController do
   end
 
   describe "GET new" do
-    let(:user) { Fabricate(:user) }
-    before do
-      session[:user_id] = user.id
-    end
+    before { set_current_user }
 
     it "sets @trial" do
       get :new
@@ -94,9 +84,7 @@ describe TrialsController do
       let(:trial) { Fabricate(:trial, user_id: user.id) }
 
     context "for authenticated user" do
-      before do
-        session[:user_id] = user.id
-      end
+      before { set_current_user(user) }
 
       it "renders the edit page for a trial belonging to user" do
         get :edit, id: trial.id
@@ -111,12 +99,45 @@ describe TrialsController do
       end
     end
 
-    context "for unauthenticated user" do
-      it "redirects to the login page" do
-        trial
-        session[:user_id] = nil
-        get :edit, id: trial.id
-        expect(response).to redirect_to login_path
+    it_behaves_like "requires login" do
+      let(:action) { get :edit, id: (Fabricate(:trial)).id }
+    end
+  end
+
+  describe "PATCH update" do
+    context "for authenticated users" do
+      let(:user) { Fabricate(:user) }
+      let(:trial) { Fabricate(:trial, user_id: user.id, instructions: "Not to be") }
+      before { set_current_user(user) }
+
+      it "saves the trial for valid inputs" do
+        put :update, { id: trial, trial: Fabricate.attributes_for(:trial, name: "updated!") }
+        trial.reload
+        expect(trial.name).to eq("updated!")
+      end
+
+      it "redirects to the index on valid inputs" do
+        put :update, { id: trial, trial: Fabricate.attributes_for(:trial, name: "updated!") }
+        trial.reload
+        expect(response).to redirect_to trials_path
+      end
+
+      it "does not save the trial with invalid inputs" do
+        put :update, { id: trial, trial: Fabricate.attributes_for(:trial, name: nil, instructions: "To be or not to be") }
+        trial.reload
+        expect(trial.instructions).to eq("Not to be")
+      end
+
+      it "rerenders the edit view on invalid inputs" do
+        put :update, { id: trial, trial: Fabricate.attributes_for(:trial, name: nil, instructions: "To be or not to be") }
+        trial.reload
+        expect(response).to render_template :edit
+      end
+    end
+
+    context "for unauthenticated users" do
+      it_behaves_like "requires login" do
+        let(:action) { put :update, { id: Fabricate(:trial), trial: Fabricate.attributes_for(:trial, name: "updated!") } }
       end
     end
   end
@@ -126,9 +147,7 @@ describe TrialsController do
       let(:user) { Fabricate(:user) }
       let(:other_user) { Fabricate(:user) }
       let(:users_trial) { Fabricate(:trial, user_id: user.id) }
-      before do
-        session[:user_id] = user.id
-      end
+      before { set_current_user(user) }
 
       it "destroys the users trial" do
         expect { delete :destroy, {:id => users_trial.to_param}}.to change(Trial, :count).by(0)

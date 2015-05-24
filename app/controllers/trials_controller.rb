@@ -28,7 +28,12 @@ class TrialsController < ApplicationController
   end
 
   def update
-
+    if @trial.update(trial_params)
+      flash[:success] = "Trial updated"
+      redirect_to trials_path
+    else
+      render :edit
+    end
   end
 
   def destroy
