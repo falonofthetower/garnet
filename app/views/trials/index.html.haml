@@ -6,10 +6,10 @@
       - @trials.each do |trial|
         %li.row
           .col-sm-2
-            %h3= link_to trial.name, trial.url
+            %h3= link_to trial.name, fix_url(trial.url)
         %li.row
           .col-sm-2
-            %p= link_to "Cancel Trial", trial.cancel_url
+            %p= link_to "Cancel Trial", fix_url(trial.cancel_url)
         %li.row
           .col-sm-2
             %p= "Trial expires: #{trial.expiration_date}"
