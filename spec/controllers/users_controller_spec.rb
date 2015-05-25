@@ -21,6 +21,10 @@ describe UsersController do
      it "redirects to the index page" do
        expect(response).to redirect_to(trials_path)
      end
+
+     it "sets the flash message" do
+       expect(flash[:success]).not_to be_blank
+     end
    end
 
    context "with invalid attributes" do
