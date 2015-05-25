@@ -29,8 +29,9 @@ describe Trial do
   end
 
   describe "all_expired" do
+    let(:user) { Fabricate(:user) }
+
     it "returns in ASC order" do
-      user = Fabricate(:user)
       second_expired_trial = Fabricate(:trial, expiration_date: 17.days.ago, user_id: user.id)
       first_expired_trial = Fabricate(:trial, expiration_date: 27.days.ago, user_id: user.id)
       third_expired_trial = Fabricate(:trial, expiration_date: 7.days.ago, user_id: user.id)
@@ -38,10 +39,14 @@ describe Trial do
     end
 
     it "only returns expired trials" do
-      user = Fabricate(:user)
       active_trial = Fabricate(:trial, expiration_date: 17.days.from_now, user_id: user.id)
       expired_trial = Fabricate(:trial, expiration_date: 17.days.ago, user_id: user.id)
       expect(Trial.all_expired(user)).to eq([expired_trial])
+    end
+
+    it "returns trials expiring today" do
+      expiries_today_trial = Fabricate(:trial, expiration_date:  Date.today, user_id: user.id)
+      expect(Trial.all_expired(user)).to eq([expiries_today_trial])
     end
   end
 end
