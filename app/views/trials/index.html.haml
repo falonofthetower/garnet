@@ -1,40 +1,32 @@
 .container
   .row
     %header
-      %h3 Expired Trials
-    %ul
-      - @expired_trials.each do |trial|
-        %li.row
-          .col-sm-2
-            %h3= link_to trial.name, fix_url(trial.url)
-        %li.row
-          .col-sm-2
-            %p= link_to "Cancel Trial", fix_url(trial.cancel_url)
-        %li.row
-          .col-sm-2
-            %p= "Trial expires: #{trial.expiration_date}"
-        %li.row
-          .col-xs-1
-            %p= link_to "Edit", edit_trial_path(trial)
-          .col-xs-1
-            %p= link_to "Delete", { action: :destroy, id: trial.id }, method: :delete, data: { confirm: 'Are you sure?' }
-            %hr
-    %header
       %h3 Active Trials
-    %ul
+    %table.table
       - @active_trials.each do |trial|
-        %li.row
-          .col-sm-2
-            %h3= link_to trial.name, fix_url(trial.url)
-        %li.row
-          .col-sm-2
+        %tr
+          %td.row
+            %p= link_to trial.name, fix_url(trial.url)
+          %td.row
             %p= link_to "Cancel Trial", fix_url(trial.cancel_url)
-        %li.row
-          .col-sm-2
+          %td.row
             %p= "Trial expires: #{trial.expiration_date}"
-        %li.row
-          .col-xs-1
+          %td.row
             %p= link_to "Edit", edit_trial_path(trial)
-          .col-xs-1
+          %td.row
             %p= link_to "Delete", { action: :destroy, id: trial.id }, method: :delete, data: { confirm: 'Are you sure?' }
-            %hr
+    %header
+      %h3 Expired Trials
+    %table.table
+      - @expired_trials.each do |trial|
+        %tr
+          %td.row
+            %p= link_to trial.name, fix_url(trial.url)
+          %td.row
+            %p= link_to "Cancel Trial", fix_url(trial.cancel_url)
+          %td.row
+            %p= "Trial expired: #{trial.expiration_date}"
+          %td.row
+            %p= link_to "Edit", edit_trial_path(trial)
+          %td.row
+            %p= link_to "Delete", { action: :destroy, id: trial.id }, method: :delete, data: { confirm: 'Are you sure?' }
