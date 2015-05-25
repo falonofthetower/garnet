@@ -6,18 +6,32 @@ describe TrialsController do
       let(:user) { Fabricate(:user) }
       before { set_current_user(user) }
 
-      it "sets @trials" do
+      it "sets @active_trials" do
         trial = Fabricate(:trial, user_id: user.id)
         get :index
-        expect(assigns(:trials)).to match_array([trial])
+        expect(assigns(:active_trials)).to match_array([trial])
       end
 
-      it "only pull trials for the user" do
+      it "only pulls active_trials for the user" do
         other_user = Fabricate(:user)
         trial = Fabricate(:trial, user_id: user.id)
         other_trial = Fabricate(:trial, user_id: other_user.id)
         get :index
-        expect(assigns(:trials)).to match_array([trial])
+        expect(assigns(:active_trials)).to match_array([trial])
+      end
+
+      it "sets @expired_trials" do
+        trial = Fabricate(:trial, user_id: user.id, expiration_date: Faker::Date.backward(14).to_s)
+        get :index
+        expect(assigns(:expired_trials)).to match_array([trial])
+      end
+
+      it "only sets expired_trials for the user" do
+        other_user = Fabricate(:user)
+        trial = Fabricate(:trial, user_id: user.id, expiration_date: Faker::Date.backward(14).to_s)
+        other_trial = Fabricate(:trial, user_id: other_user.id, expiration_date: Faker::Date.backward(14).to_s)
+        get :index
+        expect(assigns(:expired_trials)).to match_array([trial])
       end
     end
 

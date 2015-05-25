@@ -6,7 +6,8 @@ class TrialsController < ApplicationController
   helper_method :creator?
 
   def index
-    @trials = Trial.for_user_where_not_expired current_user
+    @active_trials = Trial.all_active current_user
+    @expired_trials = Trial.all_expired current_user
   end
 
   def new
