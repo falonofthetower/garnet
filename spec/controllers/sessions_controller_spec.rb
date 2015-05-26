@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe SessionsController do
   describe "POST create" do
-      let(:da_user) { Fabricate(:user) }
+    let(:da_user) { Fabricate(:user) }
+
     context "with valid credentials" do
       before do
         post :create, email: da_user.email, password: da_user.password

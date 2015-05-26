@@ -25,8 +25,7 @@ class TrialsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @trial.update(trial_params)
@@ -42,23 +41,23 @@ class TrialsController < ApplicationController
     if @trial.user != current_user
       flash[:danger] = "Something went wrong"
     else
-      @trial.destroy unless (@trial.user != current_user)
+      @trial.destroy if (@trial.user == current_user)
     end
     redirect_to trials_path
   end
 
+  private
+
   def creator?
     current_user == @trial.user
   end
-
-  private
 
   def set_trial
     @trial = Trial.find(params[:id])
   end
 
   def trial_params
-    params.require(:trial).permit(:name, :url, :cancel_url, :instructions, :expiration_date, :user_id)
+    params.require(:trial).permit(:name, :url, :cancel_url, :instructions, :expiration_date)
   end
 
   def require_creator
