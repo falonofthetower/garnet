@@ -7,29 +7,29 @@ describe TrialsController do
       before { set_current_user(user) }
 
       it "sets @active_trials" do
-        trial = Fabricate(:trial, user_id: user.id)
+        trial = Fabricate(:trial, user: user)
         get :index
         expect(assigns(:active_trials)).to match_array([trial])
       end
 
       it "only pulls active_trials for the user" do
         other_user = Fabricate(:user)
-        trial = Fabricate(:trial, user_id: user.id)
-        other_trial = Fabricate(:trial, user_id: other_user.id)
+        trial = Fabricate(:trial, user: user)
+        other_trial = Fabricate(:trial, user: other_user)
         get :index
         expect(assigns(:active_trials)).to match_array([trial])
       end
 
       it "sets @expired_trials" do
-        trial = Fabricate(:trial, user_id: user.id, expiration_date: Faker::Date.backward(14).to_s)
+        trial = Fabricate(:trial, user: user, expiration_date: Faker::Date.backward(14).to_s)
         get :index
         expect(assigns(:expired_trials)).to match_array([trial])
       end
 
       it "only sets expired_trials for the user" do
         other_user = Fabricate(:user)
-        trial = Fabricate(:trial, user_id: user.id, expiration_date: Faker::Date.backward(14).to_s)
-        other_trial = Fabricate(:trial, user_id: other_user.id, expiration_date: Faker::Date.backward(14).to_s)
+        trial = Fabricate(:trial, user: user, expiration_date: Faker::Date.backward(14).to_s)
+        other_trial = Fabricate(:trial, user: other_user, expiration_date: Faker::Date.backward(14).to_s)
         get :index
         expect(assigns(:expired_trials)).to match_array([trial])
       end
@@ -95,7 +95,7 @@ describe TrialsController do
 
   describe "GET edit" do
       let(:user) { Fabricate(:user) }
-      let(:trial) { Fabricate(:trial, user_id: user.id) }
+      let(:trial) { Fabricate(:trial, user: user) }
 
     context "for authenticated user" do
       before { set_current_user(user) }
@@ -107,7 +107,7 @@ describe TrialsController do
 
       it "redirects to index for a trial not belonging to the user" do
         other_user = Fabricate(:user)
-        other_trial = Fabricate(:trial, user_id: other_user.id)
+        other_trial = Fabricate(:trial, user: other_user)
         get :edit, id: other_trial.id
         expect(response).to redirect_to trials_path
       end
@@ -121,7 +121,7 @@ describe TrialsController do
   describe "PATCH update" do
     context "for authenticated users" do
       let(:user) { Fabricate(:user) }
-      let(:trial) { Fabricate(:trial, user_id: user.id, instructions: "Not to be") }
+      let(:trial) { Fabricate(:trial, user: user, instructions: "Not to be") }
       before { set_current_user(user) }
 
       it "saves the trial for valid inputs" do
@@ -160,16 +160,16 @@ describe TrialsController do
     context "for authenticated user" do
       let(:user) { Fabricate(:user) }
       let(:other_user) { Fabricate(:user) }
-      let(:users_trial) { Fabricate(:trial, user_id: user.id) }
+      let(:users_trial) { Fabricate(:trial, user: user) }
       before { set_current_user(user) }
 
       it "destroys the users trial" do
-        expect { delete :destroy, {:id => users_trial.to_param}}.to change(Trial, :count).by(0)
+        expect { delete :destroy, { id: users_trial.id }}.to change(Trial, :count).by(0)
       end
 
       it "does not destroy another users item" do
-        other_trial = Fabricate(:trial, user_id: other_user.id)
-        expect { delete :destroy, {:id => other_trial.to_param}}.to change(Trial, :count).by(0)
+        other_trial = Fabricate(:trial, user: other_user)
+        expect { delete :destroy, { id: other_trial.id }}.to change(Trial, :count).by(0)
       end
 
       it "redirects to the index" do
